@@ -7,7 +7,10 @@ This is a chess game implemented in **C++**, using **SDL2** for graphics renderi
 ### Requirements
 - A C++17 compatible compiler (g++/clang++)  
 - [SDL2]  
-- [SDL2_image]  
+- [SDL2_image]
+  
+## ▶️ Compile & Run
+Use the following commands to compile and run the game:
 
 ### Linux / macOS
 ```bash
