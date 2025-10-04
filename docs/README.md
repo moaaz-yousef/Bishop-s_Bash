@@ -16,6 +16,7 @@ g++ src/*.cpp -lSDL2 -lSDL2_image -o main
 ```
 
 ### Windows 
+```bash
 g++ src/*.cpp -IC:/path/to/SDL2/include -LC:/path/to/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o main.exe
 main.exe
 ```
