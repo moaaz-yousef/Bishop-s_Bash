@@ -13,7 +13,9 @@ This is a chess game implemented in **C++**, using **SDL2** for graphics renderi
 ```bash
 g++ src/*.cpp -lSDL2 -lSDL2_image -o main
 ./main
+```
 
 ### Windows 
 g++ src/*.cpp -IC:/path/to/SDL2/include -LC:/path/to/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o main.exe
 main.exe
+```
