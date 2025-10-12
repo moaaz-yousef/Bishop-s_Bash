@@ -3,19 +3,23 @@
 
 #include <map>
 #include "Piece.h"
+#include "Game.h"
 #include "../headers/Types.h"
 
 using namespace std;
 
+class Game;
+
 class Board
 {
 private:
+    Game *game;
     Piece *cells[8][8];
     Piece *scanDirection(Position start, int xDirection, int yDirection);
     Move lastMove = {{-1, -1}, {-1, -1}, nullptr};
 
 public:
-    Board();
+    Board(Game *game);
     bool hasPiece(Position position) const;
     Piece *getPieceAt(Position position) const;
     void movePiece(Position selectedSquare, Position position);

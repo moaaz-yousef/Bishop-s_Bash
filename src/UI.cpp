@@ -1,6 +1,8 @@
 #include <iostream>
-#include "../headers/UI.h"
 #include <SDL2/SDL_image.h>
+#include "../headers/UI.h"
+#include "../headers/Board.h"
+#include "../headers/Piece.h"
 using namespace std;
 
 UI::UI()
@@ -165,6 +167,26 @@ void UI::drawBoard(const Board *board, Position selectedPosition, std::unordered
 void UI::render()
 {
     SDL_RenderPresent(renderer);
+}
+
+void UI::showPromotionOptions(Position position)
+{
+    int optionWidth = getSquareSize() / 2;
+    int optionHeight = getSquareSize() / 2;
+    SDL_Rect options[4];
+    for (int i = 0; i < 4; ++i)
+    {
+        options[i] = {position.col * getSquareSize() + ((i & 1) == 1 ? getSquareSize() / 2 : 0), position.row * getSquareSize() + (i > 1 ? getSquareSize() / 2 : 0), optionWidth, optionHeight};
+        SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+        SDL_RenderFillRect(renderer, &options[i]);
+    }
+
+    drawPiece(PieceType::QUEEN, Color::WHITE, options[0].x, options[0].y, optionWidth);
+    drawPiece(PieceType::ROOK, Color::WHITE, options[1].x, options[1].y, optionWidth);
+    drawPiece(PieceType::BISHOP, Color::WHITE, options[2].x, options[2].y, optionWidth);
+    drawPiece(PieceType::KNIGHT, Color::WHITE, options[3].x, options[3].y, optionWidth);
+
+    render();
 }
 
 UI::~UI()

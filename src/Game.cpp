@@ -5,7 +5,7 @@ using namespace std;
 
 Game::Game()
 {
-    board = new Board();
+    board = new Board(this);
     ui = new UI();
     ui->drawBoard(board, selectedSquare, legalMoves);
     ui->render();
@@ -86,6 +86,50 @@ void Game::handleClick(int xCoord, int yCoord)
         {
             selectedSquare = {-1, -1};
             legalMoves.clear();
+        }
+    }
+}
+
+PieceType Game::handlePromotionRequest(Position position)
+{
+    ui->showPromotionOptions(position);
+    SDL_Event e;
+    while (true)
+    {
+        while (SDL_WaitEvent(&e))
+        {
+            if (e.type == SDL_QUIT)
+            {
+                exit(0);
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                Position clickedPosition = {y / ui->getSquareSize(), x / ui->getSquareSize()};
+                if (clickedPosition != position)
+                    continue;
+
+                int option = 0;
+                int Xcenter = position.col * ui->getSquareSize() + ui->getSquareSize() / 2;
+                int Ycenter = position.row * ui->getSquareSize() + ui->getSquareSize() / 2;
+                if (x > Xcenter)
+                    option += 1;
+                if (y > Ycenter)
+                    option += 2;
+
+                switch (option)
+                {
+                case 0:
+                    return PieceType::QUEEN;
+                case 1:
+                    return PieceType::ROOK;
+                case 2:
+                    return PieceType::BISHOP;
+                case 3:
+                    return PieceType::KNIGHT;
+                }
+            }
         }
     }
 }

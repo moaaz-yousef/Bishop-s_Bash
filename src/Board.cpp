@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Board::Board()
+Board::Board(Game *game)
 {
     // initialize pieces
     cells[0][0] = new Rook(Color::BLACK);
@@ -42,6 +42,9 @@ Board::Board()
     cells[7][5] = new Bishop(Color::WHITE);
     cells[7][6] = new Knight(Color::WHITE);
     cells[7][7] = new Rook(Color::WHITE);
+
+    // link to game
+    this->game = game;
 }
 
 bool Board::hasPiece(Position position) const
@@ -128,6 +131,34 @@ void Board::movePiece(Position selectedSquare, Position position)
     {
         Rook *rook = (Rook *)movingPiece;
         rook->markAsMoved();
+    }
+
+    // if the move is a pawn promotion, get the promotion option and replace the pawn
+    if (movingPiece->getPieceType() == PieceType::PAWN && (position.row == 0 || position.row == 7))
+    {
+        Color color = movingPiece->getColor();
+        delete cells[position.row][position.col];
+        cells[position.row][position.col] = nullptr;
+
+        PieceType pieceType = game->handlePromotionRequest(position);
+        switch (pieceType)
+        {
+        case PieceType::QUEEN:
+            cells[position.row][position.col] = new Queen(color);
+            break;
+        case PieceType::ROOK:
+            cells[position.row][position.col] = new Rook(color);
+            break;
+        case PieceType::BISHOP:
+            cells[position.row][position.col] = new Bishop(color);
+            break;
+        case PieceType::KNIGHT:
+            cells[position.row][position.col] = new Knight(color);
+            break;
+        default:
+            cells[position.row][position.col] = new Knight(color);
+            break;
+        }
     }
 
     setLastMove({selectedSquare, position, movingPiece});

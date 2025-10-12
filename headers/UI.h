@@ -2,11 +2,13 @@
 #define UI_H
 
 #include <map>
+#include <unordered_set>
 #include <SDL2/SDL.h>
 #include "Types.h"
-#include "Board.h"
 
 using namespace std;
+
+class Board;
 
 class UI
 {
@@ -23,13 +25,13 @@ private:
     void drawPiece(PieceType type, Color color, int x, int y, int size);
     void drawPieces(const Board *board);
     void loadTextures();
-    void showPromotionOptions();
 
 public:
     UI();
     int getSquareSize();
     void drawBoard(const Board *board, Position selectedPosition, std::unordered_set<Position, PositionHash> legalMoves);
     void render();
+    void showPromotionOptions(Position position);
     ~UI();
 };
 

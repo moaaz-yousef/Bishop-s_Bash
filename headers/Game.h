@@ -5,6 +5,8 @@
 #include "UI.h"
 #include <unordered_set>
 
+class Board;
+
 class Game
 {
 private:
@@ -19,6 +21,7 @@ public:
     void run();
     void handleClick(int xCoord, int yCoord);
     bool hasSelected() const;
+    PieceType handlePromotionRequest(Position position);
     ~Game();
 };
 
