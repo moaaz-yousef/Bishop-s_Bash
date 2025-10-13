@@ -9,7 +9,7 @@ UI::UI()
 {
     initSDL();
     IMG_Init(IMG_INIT_PNG);
-    boardWidth = 800, boardHeight = 800;
+    boardWidth = 600, boardHeight = 600;
     createWindow();
     createRenderer();
     loadTextures();

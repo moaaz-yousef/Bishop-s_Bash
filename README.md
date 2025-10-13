@@ -14,12 +14,12 @@ Use the following commands to compile and run the game:
 
 ### Linux / macOS
 ```bash
-g++ src/*.cpp -lSDL2 -lSDL2_image -o main
+g++ main.cpp src/*.cpp -lSDL2 -lSDL2_image -o main
 ./main
 ```
 
 ### Windows 
 ```bash
-g++ src/*.cpp -IC:/path/to/SDL2/include -LC:/path/to/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o main.exe
-main.exe
+g++ main.cpp src/*.cpp -IC:/path/to/SDL2/include -IC:/path/to/SDL2/include/SDL2 -IC:/path/to/SDL2_image/include -LC:/path/to/SDL2/lib -LC:/path/to/SDL2_image/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -Dmain=SDL_main -o main.exe
+./main
 ```
