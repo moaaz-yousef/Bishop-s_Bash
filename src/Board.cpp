@@ -305,6 +305,92 @@ bool Board::isSafeMove(Move move)
     return safe;
 }
 
+Move Board::getLastMove() const
+{
+    return lastMove;
+}
+
+void Board::setLastMove(Move move)
+{
+    lastMove = move;
+}
+
+bool Board::isInsufficientMaterial()
+{
+    int whiteBishops = 0, blackBishops = 0;
+    int whiteKnights = 0, blackKnights = 0;
+    bool whiteDarkBishop = false, whiteLightBishop = false;
+    bool blackDarkBishop = false, blackLightBishop = false;
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            Piece *piece = cells[row][col];
+            if (piece != nullptr)
+            {
+                switch (piece->getPieceType())
+                {
+                case PieceType::PAWN:
+                case PieceType::ROOK:
+                case PieceType::QUEEN:
+                    return false;
+                    break;
+                case PieceType::KNIGHT:
+                    if (piece->getColor() == Color::WHITE)
+                        whiteKnights++;
+                    else
+                        blackKnights++;
+                    break;
+                case PieceType::BISHOP:
+                    if (piece->getColor() == Color::WHITE)
+                    {
+                        ++whiteBishops;
+                        if ((row + col) % 2 == 0)
+                            whiteLightBishop = true;
+                        else
+                            whiteDarkBishop = true;
+                    }
+                    else
+                    {
+                        ++blackBishops;
+                        if ((row + col) % 2 == 0)
+                            blackLightBishop = true;
+                        else
+                            blackDarkBishop = true;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
+    if (whiteBishops == 0 && blackBishops == 0 && whiteKnights == 0 && blackKnights == 0)
+    {
+        return true;
+    }
+    else if (((whiteBishops == 0) ^ (blackBishops == 0)) && whiteKnights == 0 && blackKnights == 0)
+    {
+        return true;
+    }
+    else if (whiteBishops == 1 && blackBishops == 1 && whiteKnights == 0 && blackKnights == 0)
+    {
+        if ((whiteDarkBishop && blackDarkBishop) || (whiteLightBishop && blackLightBishop))
+            return true;
+    }
+    else if (whiteBishops == 0 && blackBishops == 0 && whiteKnights == 1 && blackKnights == 1)
+    {
+        return true;
+    }
+    else if (whiteBishops == 0 && blackBishops == 0 && ((whiteKnights == 1) ^ (blackKnights == 1)))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 Board::~Board()
 {
     for (int row = 0; row < 8; ++row)
@@ -318,14 +404,4 @@ Board::~Board()
             }
         }
     }
-}
-
-Move Board::getLastMove() const
-{
-    return lastMove;
-}
-
-void Board::setLastMove(Move move)
-{
-    lastMove = move;
 }

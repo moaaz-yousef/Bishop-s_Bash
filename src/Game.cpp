@@ -69,11 +69,19 @@ void Game::handleClick(int xCoord, int yCoord)
                 if (board->isKingInCheck(currentPlayer))
                 {
                     cout << (currentPlayer == WHITE ? "Black" : "White") << " wins by checkmate!" << endl;
+                    exit(0);
                 }
                 else
                 {
                     cout << "Stalemate! It's a draw." << endl;
+                    exit(0);
                 }
+            }
+
+            if (board->isInsufficientMaterial())
+            {
+                cout << "Draw due to insufficient material for a checkmate." << endl;
+                exit(0);
             }
         }
         else if (board->hasPiece(position) && board->getPieceAt(position)->getColor() == currentPlayer)

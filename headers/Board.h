@@ -28,6 +28,7 @@ public:
     bool isSafeMove(Move move);
     Move getLastMove() const;
     void setLastMove(Move move);
+    bool isInsufficientMaterial();
     ~Board();
 };
 
