@@ -17,6 +17,7 @@ private:
     Piece *cells[8][8];
     Piece *scanDirection(Position start, int xDirection, int yDirection);
     Move lastMove = {{-1, -1}, {-1, -1}, nullptr};
+    int seventyFiveMoveCounter = 0;
 
 public:
     Board(Game *game);
@@ -29,6 +30,7 @@ public:
     Move getLastMove() const;
     void setLastMove(Move move);
     bool isInsufficientMaterial();
+    bool isSeventyFiveMoveRule();
     ~Board();
 };
 

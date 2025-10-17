@@ -83,6 +83,12 @@ void Game::handleClick(int xCoord, int yCoord)
                 cout << "Draw due to insufficient material for a checkmate." << endl;
                 exit(0);
             }
+
+            if (board->isSeventyFiveMoveRule())
+            {
+                cout << "Draw by the 75-move rule." << endl;
+                exit(0);
+            }
         }
         else if (board->hasPiece(position) && board->getPieceAt(position)->getColor() == currentPlayer)
         {

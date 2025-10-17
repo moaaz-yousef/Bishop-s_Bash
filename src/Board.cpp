@@ -71,9 +71,12 @@ void Board::movePiece(Position selectedSquare, Position position)
     if (!movingPiece)
         return;
 
+    ++seventyFiveMoveCounter;
+
     // if the move is en passant, remove the captured pawn
     if (movingPiece->getPieceType() == PieceType::PAWN)
     {
+        seventyFiveMoveCounter = 0;
         Pawn *pawn = (Pawn *)movingPiece;
         int direction = (pawn->getColor() == Color::WHITE) ? -1 : 1;
         if (selectedSquare.col != position.col && !hasPiece(position))
@@ -91,6 +94,7 @@ void Board::movePiece(Position selectedSquare, Position position)
     {
         delete cells[position.row][position.col];
         cells[position.row][position.col] = nullptr;
+        seventyFiveMoveCounter = 0;
     }
 
     cells[position.row][position.col] = movingPiece;
@@ -366,29 +370,39 @@ bool Board::isInsufficientMaterial()
         }
     }
 
+    // King vs King
     if (whiteBishops == 0 && blackBishops == 0 && whiteKnights == 0 && blackKnights == 0)
     {
         return true;
     }
+    // King vs King + Bishop
     else if (((whiteBishops == 0) ^ (blackBishops == 0)) && whiteKnights == 0 && blackKnights == 0)
     {
         return true;
     }
+    // King +Bishop vs King + Bishop (Bishops are on same color)
     else if (whiteBishops == 1 && blackBishops == 1 && whiteKnights == 0 && blackKnights == 0)
     {
         if ((whiteDarkBishop && blackDarkBishop) || (whiteLightBishop && blackLightBishop))
             return true;
     }
+    // King + Knight vs King + Knight
     else if (whiteBishops == 0 && blackBishops == 0 && whiteKnights == 1 && blackKnights == 1)
     {
         return true;
     }
+    // King + Knight vs King
     else if (whiteBishops == 0 && blackBishops == 0 && ((whiteKnights == 1) ^ (blackKnights == 1)))
     {
         return true;
     }
 
     return false;
+}
+
+bool Board::isSeventyFiveMoveRule()
+{
+    return seventyFiveMoveCounter >= 75;
 }
 
 Board::~Board()
