@@ -402,7 +402,7 @@ bool Board::isInsufficientMaterial()
 
 bool Board::isSeventyFiveMoveRule()
 {
-    return seventyFiveMoveCounter >= 75;
+    return seventyFiveMoveCounter >= 150;
 }
 
 Board::~Board()
